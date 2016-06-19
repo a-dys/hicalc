@@ -13,6 +13,11 @@ var hiwaysCalc = (function () {
         strokeColor: '#FF0000',
         strokeWeight: 6
     });
+    var polylineAlt = new google.maps.Polyline({
+        path: [],
+        strokeColor: '#A0A0A0',
+        strokeWeight: 6
+    });
     var markers = [];
 
     var coordinatesA2 = {"coords":[
@@ -42,6 +47,7 @@ var hiwaysCalc = (function () {
             document.getElementById("form").addEventListener("submit", function (e) {
                 e.preventDefault();
                 that.calculateAndDisplayRoute();
+                that.calculateAndDisplayAltRoute();
             });
         },
 
@@ -75,6 +81,44 @@ var hiwaysCalc = (function () {
                     }
 
                     polyline.setMap(map);
+                    map.fitBounds(bounds);
+
+                    that.displayRamps();
+
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        },
+        calculateAndDisplayAltRoute: function () {
+            var that = this;
+            directionsService.route({
+                origin: document.getElementById('from').value,
+                destination: document.getElementById('to').value,
+                travelMode: google.maps.TravelMode.DRIVING,
+                avoidHighways: true
+            }, function (response, status) {
+                that.showAltInfo(response);
+
+                if (status === google.maps.DirectionsStatus.OK) {
+
+                    polylineAlt.setPath([]);
+
+                    var bounds = new google.maps.LatLngBounds();
+
+                    var legs = response.routes[0].legs;
+                    for (i = 0; i < legs.length; i++) {
+                        var steps = legs[i].steps;
+                        for (j = 0; j < steps.length; j++) {
+                            var nextSegment = steps[j].path;
+                            for (k = 0; k < nextSegment.length; k++) {
+                                polylineAlt.getPath().push(nextSegment[k]);
+                                bounds.extend(nextSegment[k]);
+                            }
+                        }
+                    }
+
+                    polylineAlt.setMap(map);
                     map.fitBounds(bounds);
 
                     that.displayRamps();
@@ -127,9 +171,12 @@ var hiwaysCalc = (function () {
             }
         },
         showInfo : function(response) {
-            console.log(response.routes[0].legs[0].duration.text);
             document.getElementById("tripLength").textContent = response.routes[0].legs[0].duration.text;
             document.getElementById("tripTime").textContent = response.routes[0].legs[0].distance.text;
+        },
+        showAltInfo : function(response) {
+            document.getElementById("tripAltLength").textContent = response.routes[0].legs[0].duration.text;
+            document.getElementById("tripAltTime").textContent = response.routes[0].legs[0].distance.text;
         }
     }
 }());
