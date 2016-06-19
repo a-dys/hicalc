@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Auto</title>
     <link href="style/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -20,8 +19,7 @@
                 <label for="to">To:</label>
                 <input type="text" name="to" id="to">
 
-
-                <input type="submit" name="search" id="search">
+                <input type="button" name="search" id="search" value="Search">
             </form>
         </div>
         <div class="results">
@@ -29,11 +27,12 @@
             <div class="results__alt">[length][cost]</div>
         </div>
         <div id="map">
-
+        </div>
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClG4u5rzuOuTHWBuxCEFBHFP36sSOGK30"></script>
 
     <script src="scripts/map.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClG4u5rzuOuTHWBuxCEFBHFP36sSOGK30&callback=initMap" async defer></script>
+
 </body>
 
 </html>
