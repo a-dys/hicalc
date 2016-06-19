@@ -2,29 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Auto</title>
+    <title>HiCalc</title>
     <link href="style/style.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="header">
-        <h1>[title]</h1>
+        <h1 class="pageheader">HiCalc</h1>
     </div>
     <div class="content">
         <div class="form">
-            <form>
+            <form id="form">
                 <label for="from">From:</label>
                 <input type="text" name="from" id="from">
 
                 <label for="to">To:</label>
                 <input type="text" name="to" id="to">
 
-                <input type="button" name="search" id="search" value="Search">
+                <input type="submit" name="search" id="search" value="Search">
             </form>
         </div>
         <div class="results">
-            <div class="results__main">[length][cost]</div>
-            <div class="results__alt">[length][cost]</div>
+            <p class="results__length">
+                Travel time: <strong id="tripLength"></strong>
+            </p>
+            <p class="results__time">
+                Travel distance: <strong id="tripTime"></strong>
+            </p>
         </div>
         <div id="map">
         </div>

@@ -39,7 +39,8 @@ var hiwaysCalc = (function () {
     return {
         initMap: function () {
             var that = this;
-            document.getElementById("search").addEventListener("click", function () {
+            document.getElementById("form").addEventListener("submit", function (e) {
+                e.preventDefault();
                 that.calculateAndDisplayRoute();
             });
         },
@@ -53,6 +54,7 @@ var hiwaysCalc = (function () {
                 destination: document.getElementById('to').value,
                 travelMode: google.maps.TravelMode.DRIVING
             }, function (response, status) {
+                that.showInfo(response);
 
                 if (status === google.maps.DirectionsStatus.OK) {
 
@@ -100,10 +102,6 @@ var hiwaysCalc = (function () {
                             map: map,
                             title: obj["name"]
                         });
-                        marker.info = new google.maps.InfoWindow({
-                            content: '<b>Ramp:</b> ' + obj["name"]
-                        });
-                        marker.info.open(map, marker);
                         markers.push(marker);
                     }
                 }
@@ -127,6 +125,11 @@ var hiwaysCalc = (function () {
             for (i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
+        },
+        showInfo : function(response) {
+            console.log(response.routes[0].legs[0].duration.text);
+            document.getElementById("tripLength").textContent = response.routes[0].legs[0].duration.text;
+            document.getElementById("tripTime").textContent = response.routes[0].legs[0].distance.text;
         }
     }
 }());
